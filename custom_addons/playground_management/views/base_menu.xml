@@ -1,0 +1,8 @@
+<odoo>
+    <menuitem id="menu_playground"
+              name="Playground"/>
+
+    <menuitem id="menu_playground_craft"
+              name="Playground Crafting"
+              parent = "menu_playground"/>
+</odoo>

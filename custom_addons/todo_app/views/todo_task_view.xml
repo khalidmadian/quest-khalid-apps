@@ -1,0 +1,68 @@
+<odoo>
+    <record id="todo_task_view_form" model="ir.ui.view">
+        <field name="name">todo.task.form</field>
+        <field name="model">todo.task</field>
+        <field name="arch" type="xml">
+            <form string="To Do Task">
+                <sheet>
+                    <header>
+                        <field name="status" widget="statusbar" clickable="1"/>
+                    </header>
+                    <group>
+                        <field name="name"/>
+                        <field name="due_date"/>
+                        <field name="assign_to"/>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="todo_task_view_tree" model="ir.ui.view">
+        <field name="name">todo.task.tree</field>
+        <field name="model">todo.task</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="due_date"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="todo_task_view_search" model="ir.ui.view">
+        <field name="name">todo.task.search</field>
+        <field name="model">todo.task</field>
+        <field name="arch" type="xml">
+            <search string="to do task">
+                <filter name="new_acc" string="New" domain="[('status', '=', 'new')]"/>
+                <filter name="in_progress_acc" string="In progress" domain="[('status', '=', 'in_progress')]"/>
+                <filter name="completed_acc" string="Completed" domain="[('status', '=', 'completed')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_state" string="status" domain="[]" context="{'group_by':'status'}"/>
+                    <filter name="group_assign_to" string="Assign to" domain="[]" context="{'group_by':'assign_to'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_todo_task" model="ir.actions.act_window">
+        <field name="name">ToDo App</field>
+        <field name="res_model">todo.task</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+
+    <menuitem id="to_do_tasks_menu"
+              name="To Do Tasks"
+              parent="todo_task_menu"
+              action="action_todo_task"/>
+</odoo>

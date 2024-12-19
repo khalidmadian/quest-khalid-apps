@@ -1,0 +1,75 @@
+<odoo>
+    <record id="playground_report" model="ir.actions.report">
+        <field name="name">playground report</field>
+        <field name="model">playground.craft</field>
+        <field name="report_type">qweb-html</field>
+        <field name="binding_model_id" ref="model_playground_craft"/>
+        <field name="binding_type">report</field>
+        <field name="report_name">playground_management.playground_report_template</field>
+    </record>
+    <template id="playground_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <t t-foreach="docs" t-as="rec">
+                        <style>
+                            table {
+                            width: 100%;
+                            background-color: #f0f0f0;
+                            border: 1px solid gray;
+                            border-collapse: collapse;
+                            }
+
+
+                            table th {
+                            font-weight: bold;
+                            font-size: 18px;
+                            padding: 5px;
+                            height: 35px;
+                            text-align:center;
+                            }
+
+                            table td {
+                            padding: 15px;
+                            border: 1px solid gray;
+                            text-align: center;
+                            background-color: white;
+                            font-size: 16px;
+                            height: 0px;
+                            width: calc(100% / 4);
+                            }
+                            .bold{
+                            font-weight: bold;
+                            }
+                        </style>
+                        <table>
+                            <thead>
+                                <th colspan="4">general Information</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="bold">name</td>
+                                    <td ><t t-esc="rec.name"/></td>
+                                    <td class="bold">Governorate</td>
+                                    <td><t t-esc="rec.governorate"/></td>
+                                </tr>
+                            </tbody>
+
+                            <thead>
+                                <th colspan="4">Additional Information</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="bold">owner</td>
+                                    <td><t t-esc="rec.owner_id.name"/></td>
+                                    <td class="bold">phone</td>
+                                    <td><t t-esc="rec.owner_phone"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

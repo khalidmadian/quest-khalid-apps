@@ -1,0 +1,128 @@
+<odoo>
+    <record id="view_playground_craft_form" model="ir.ui.view">
+        <field name="name">playground.craft.form</field>
+        <field name="model">playground.craft</field>
+        <field name="arch" type="xml">
+            <form string="Playground">
+                <sheet>
+                    <!-- Header Section -->
+                    <header>
+                        <field name="state" widget="statusbar" clickable="0"/>
+                        <!--                        name= the function in this case because the type=object-->
+                        <button name="action_under_construction"
+                                type="object"
+                                class="btn-danger"
+                                string="Under Construction"
+                                attrs="{'invisible': [('state', 'in', ['under_construction'])]}"/>
+
+                        <button name="action_ready"
+                                type="object"
+                                class="btn-warning"
+                                string="Ready"
+                                attrs="{'invisible': [('state', 'in', ['ready'])]}"/>
+
+                        <button name="action_rented"
+                                type="object"
+                                class="btn-success"
+                                string="Rented"
+                                attrs="{'invisible': [('state', 'in', ['rented','under_construction'])]}"/>
+                    </header>
+                    <separator/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Enter Playground Name..."/>
+                        </h1>
+                    </div>
+                    <!-- Main Content -->
+                    <group col="2">
+                        <group>
+                            <group>
+                                <field name="governorate"/>
+                                <field name="owner_id"/>
+                                <field name="expected_rented_date"/>
+                                <field name="is_late" readonly="1"/>
+                                <field name="owner_phone"/>
+                                <field name="length" placeholder="Dimensions(L)"/>
+                                <field name="width" placeholder="Width (W)"/>
+                                <field name="area" placeholder="Area (in sq meters)"/>
+                                <field name="rent_price" placeholder="Rent Price"/>
+                                <field name="active"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="coffe_shop" widget="boolean"/>
+                            <field name="restaurant" widget="boolean"/>
+                            <field name="shower" widget="boolean"/>
+                            <field name="playground_floor"/>
+                            <field name="social"/>
+                            <field name="description" widget="text" placeholder="Enter description here..."/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_playground_craft_tree" model="ir.ui.view">
+        <field name="name">playground.craft.tree</field>
+        <field name="model">playground.craft</field>
+        <field name="arch" type="xml">
+            <tree class="custom_header" string="Playgrounds" decoration-danger="is_late">
+                <field name="name"/>
+                <field name="governorate"/>
+                <field name="length" placeholder="Length (L)"/>
+                <field name="width" placeholder="Width (W)"/>
+                <field name="is_late" invisible="1"/>
+                <field name="area"/>
+                <field name="rent_price"/>
+                <field name="coffe_shop"/>
+                <field name="restaurant"/>
+                <field name="shower"/>
+                <field name="playground_floor"/>
+                <field name="social"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_playground_craft" model="ir.actions.act_window">
+        <field name="name">Playground Craft</field>
+        <field name="res_model">playground.craft</field>
+        <field name="view_mode">tree,form,search</field>
+    </record>
+
+    <record id="playground_closed_server_action" model="ir.actions.server">
+        <field name="name">Closed</field>
+        <field name="model_id" ref="model_playground_craft"/>
+        <field name="binding_model_id" ref="model_playground_craft"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = records.action_closed()
+        </field>
+
+    </record>
+
+    <record id="check_rented_date_cron" model="ir.cron">
+        <field name="name">playground_craft: Check Rented date</field>
+        <field name="model_id" ref="model_playground_craft"/>
+        <field name="state">code</field>
+        <field name="code">model.check_expected_rented_date()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+
+
+    </record>
+
+    <menuitem id="menu_playground_craft_item"
+              name="Playground Craft"
+              parent="menu_playground_craft"
+              action="action_playground_craft"/>
+</odoo>

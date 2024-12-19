@@ -1,0 +1,13 @@
+<odoo>
+    <record id="res_partner_view_form" model="ir.ui.view">
+        <field name="name">res.partner.form.inherited.playground</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="playground_name"  placeholder="Playground's"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
